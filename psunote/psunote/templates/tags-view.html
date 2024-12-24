@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Tag: {{ tag_name }}{% endblock %}
+{% block body %}
+{% for note in notes %}
+{% for t in note.tags %}
+<ul class="nav justify-content-center" style="padding-top: 1em;">
+  <li class="nav-item">
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Home</a>
+    <form action="{{ url_for('tags_delete', tag_id=t.id) }}" method="POST" style="display:inline;">
+      <button class="btn btn-danger" type="submit">Delete Tag</button>
+    </form>
+    <button class="btn btn-warning" type="submit" onclick="document.getElementById('edit').style.display='flex'">Edit Tag</button>
+
+  </li>
+  <li class="nav-item">
+    <div class="btn btn-disagle">{{ tag }}</div>
+  </li>
+</ul>
+<form id="edit" method="POST" action="{{ url_for('tags_edit',tag_id=t.id)}}" style="gap: 20px; display: flex;flex-direction: column;display: none;">
+  <div style="display: flex;flex-direction: row;">
+      <input type="text" class="form-control" id="tag" name="tag" placeholder="Enter name" required>
+      <button type="submit" class="btn btn-success">Submit</button>
+  </div>
+</form>
+<div class="card my-3">
+  <div class="card-body">
+    <h4 class="card-title">{{ note.title }}</h4>
+    <div class="card-text my-3">
+      {{ note.description }}
+    </div>
+    <div class="card-footer text-muted">
+      Tags: 
+        <a href="{{ url_for('tags_view', tag_name=t.name) }}">{{ t.name }}</a>,
+      <br>
+      Last update: {{ note.updated_date }}
+      <br>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
+
